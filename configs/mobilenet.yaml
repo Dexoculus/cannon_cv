@@ -1,0 +1,63 @@
+model:
+  module: 'Models'
+  class: 'CustomMobileNetV3Small'
+  args: # Input Arguments of your model
+    num_classes: 5
+    pretrained: True
+
+seed: 42
+device: 'cuda'
+task: "classification" 
+
+training:
+  epochs: 20
+  learning_rate: 0.0001
+  optimizer:
+    type: 'Adam'
+
+testing:
+  metrics:
+    - "sklearn.metrics.f1_score"
+    - "sklearn.metrics.accuracy_score" 
+    - "sklearn.metrics.r2_score"
+
+loss:
+  type: 'CrossEntropyLoss'
+  args: {}
+
+dataset:
+  module: 'utils'
+  class: 'AugmentedImageDataset'
+  preprocessing_arg: 'transform'
+  args:
+    preprocessing:
+      module: 'utils'
+      function: 'get_transform'
+
+    train:
+      args:
+        root_dir: './dataset/train'
+      loader:
+        batch_size: 32
+        shuffle: True
+    valid:
+      args:
+        root_dir: './dataset/valid'
+      loader:
+        batch_size: 32
+        shuffle: True
+    test:
+      args:
+        root_dir: './dataset/test'
+      loader:
+        batch_size: 32
+        shuffle: True
+
+visualization:
+  enabled: True
+  log_scale: True
+  plot_dir: './plots'
+
+export_results:
+  enabled: True
+  export_dir: './results'

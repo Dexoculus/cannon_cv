@@ -1,2 +1,8 @@
 # Ignore dataset
 dataset/
+
+# Ignore model checkpoints
+checkpoints/
+
+# Ignore teammate's test files
+teammates/
