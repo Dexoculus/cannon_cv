@@ -1,144 +1,246 @@
-body, html {
+/* frontend/style.css */
+
+/* --- 기본 & 레이아웃 --- */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: #2c3e50;
-    color: #ecf0f1;
+    padding: 20px; /* body에 약간의 패딩 */
+    background-color: #f0f2f5; /* 약간 밝은 회색 배경 */
+    color: #333;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    flex-direction: column; /* 수직 정렬을 위해 */
+    align-items: center; /* 가로 중앙 정렬 */
+    min-height: 100vh;
+    box-sizing: border-box; /* padding과 border를 width/height에 포함 */
 }
 
 #app-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     width: 100%;
-    height: 100%;
-    max-width: 700px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    box-sizing: border-box;
+    max-width: 800px; /* 앱 컨테이너의 최대 너비 */
+    text-align: center; /* 내부 텍스트 요소들 중앙 정렬 */
 }
 
+header h1 {
+    color: #1d3557; /* 어두운 파란색 계열 */
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.8em;
+}
+
+main {
+    width: 100%;
+}
+
+/* --- 비디오 영역 (16:9 비율 유지) --- */
 #video-wrapper {
     position: relative;
     width: 100%;
-    aspect-ratio: 4 / 3;
-    background-color: #000;
-    border-radius: 8px;
+    /* max-width는 app-container에서 제어하므로 여기서는 100% */
+    margin: 0 auto 20px auto; /* 위쪽 마진 제거, 아래쪽 마진 증가 */
+    background-color: #222; /* 비디오 로딩 전 어두운 배경 */
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    margin-bottom: 15px;
+    padding-top: 56.25%; /* 16:9 비율 (9 / 16 * 100%) */
+    border-radius: 6px; /* 비디오 컨테이너 모서리 */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 #liveVideo {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    display: block;
+    object-fit: cover; /* 비율 유지하며 꽉 채우기 (일부 잘릴 수 있음) */
+    /* object-fit: contain; */ /* 비율 유지하며 다 보이게 (여백 생길 수 있음) */
 }
 
 #inferenceOverlay {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: rgba(44, 62, 80, 0.85);
-    color: #e0e0e0;
-    padding: 7px 12px;
-    border-radius: 5px;
-    font-size: clamp(0.9rem, 2.8vw, 1.2rem);
-    font-weight: 500;
-    z-index: 10;
-    border: 1px solid rgba(236, 240, 241, 0.2);
-    min-width: 100px; /* 최소 너비로 깜빡임 줄이기 */
-    text-align: center;
+    bottom: 8px; /* 위치 조정 */
+    left: 8px;   /* 위치 조정 */
+    background-color: rgba(0, 0, 0, 0.7); /* 약간 더 투명하게 */
+    color: white;
+    padding: 6px 12px; /* 패딩 조정 */
+    border-radius: 4px;
+    font-size: 0.9em;
+    z-index: 10; /* 다른 요소 위에 오도록 */
 }
 
-#controls {
-    width: 100%;
-    background-color: #34495e;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-    box-sizing: border-box;
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: column; /* 체크박스 그룹과 버튼을 세로로 배치 */
-    align-items: center; /* 가운데 정렬 */
+/* 캡처용 캔버스는 숨김 */
+#captureCanvas {
+    display: none;
 }
+
+/* --- 컨트롤 영역 (버튼, 체크박스) --- */
+#controls {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* 컨트롤 그룹 간 간격 */
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 12px; /* 버튼 사이 간격 */
+    flex-wrap: wrap; /* 작은 화면에서 버튼 줄바꿈 */
+    width: 100%;
+}
+
+/* 버튼 그룹 순서 (선택적) */
+.button-group.main-actions { order: 1; }
+.checkbox-group { order: 2; }
+.button-group.secondary-actions { order: 3; }
+
+
+.control-button {
+    padding: 10px 18px; /* 패딩 조정 */
+    font-size: 1em;
+    color: white;
+    border: none;
+    border-radius: 6px; /* 모서리 둥글기 조정 */
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+    min-width: 180px; /* 버튼 최소 너비 */
+    text-align: center;
+    font-weight: 500; /* 글꼴 두께 */
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.control-button:hover {
+    transform: translateY(-1px); /* 살짝 위로 뜨는 효과 */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.control-button:active {
+    transform: translateY(0px);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+.control-button:disabled { /* 비활성화된 버튼 스타일 */
+    background-color: #ccc !important;
+    color: #888 !important;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+
+#startCameraButton, .action-button { /* "카메라 시작" 같은 주요 버튼 */
+    background-color: #007bff; /* Bootstrap Primary Blue */
+}
+#startCameraButton:hover, .action-button:hover {
+    background-color: #0069d9;
+}
+
+#resetCheckboxesBtn, .reset-button { /* "리셋" 같은 보조/위험 버튼 */
+    background-color: #6c757d; /* Bootstrap Secondary Gray */
+}
+#resetCheckboxesBtn:hover, .reset-button:hover {
+    background-color: #5a6268;
+}
+
 
 .checkbox-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 10px;
-    justify-items: start;
-    width: 100%; /* 부모 너비에 맞춤 */
-    margin-bottom: 15px; /* 버튼과의 간격 */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 15px; /* 세로 간격, 가로 간격 */
+    padding: 10px;
+    background-color: #f8f9fa; /* 체크박스 그룹 배경 */
+    border-radius: 6px;
+    width: calc(100% - 20px); /* 패딩 고려한 너비 */
+    max-width: 500px; /* 체크박스 그룹 최대 너비 */
 }
 
 .checkbox-group label {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    font-size: clamp(0.85rem, 2.5vw, 1rem);
-    color: #bdc3c7;
+    padding: 6px 10px;
+    background-color: #e9ecef;
+    border-radius: 4px;
+    font-size: 0.9em;
+    cursor: default; /* disabled 상태이므로 */
+}
+.checkbox-group input[type="checkbox"] {
+    margin-right: 6px;
+    accent-color: #007bff; /* 체크박스 색상 (일부 브라우저 지원) */
+}
+.checkbox-group input[type="checkbox"]:disabled {
     cursor: default;
 }
 
-.checkbox-group input[type="checkbox"] {
-    margin-right: 8px;
-    transform: scale(1.1);
-    accent-color: #1abc9c;
-}
-.checkbox-group input[type="checkbox"]:disabled {
-    opacity: 0.8;
-}
 
-.reset-button {
-    padding: 10px 20px;
-    font-size: clamp(0.85rem, 2.5vw, 1rem);
-    color: #ecf0f1;
-    background-color: #e74c3c; /* 리셋 버튼 색상 */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-.reset-button:hover {
-    background-color: #c0392b;
-}
-.reset-button:active {
-    background-color: #a93226;
-}
-
-
+/* --- 상태 바 --- */
 #statusBar {
-    width: 100%;
-    text-align: center;
-    padding: 8px;
-    font-size: 0.8rem;
-    color: #95a5a6;
-    background-color: rgba(0,0,0,0.1);
-    border-radius: 0 0 5px 5px; /* 하단에 붙도록 하려면 position 조정 필요 */
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #e9ecef;
+    border-radius: 6px;
+    font-size: 0.95em;
+    color: #495057;
+    line-height: 1.5;
 }
 
-@media (max-height: 450px) { /* 화면이 매우 낮을 때 */
+/* --- 푸터 (선택적) --- */
+footer {
+    width: 100%;
+    margin-top: auto; /* 푸터를 하단에 고정시키려는 시도 (body가 flex column일 때) */
+    padding-top: 20px; /* main과의 간격 */
+}
+
+
+/* --- 반응형 디자인 (모바일 화면) --- */
+@media (max-width: 600px) {
+    body {
+        padding: 10px; /* 모바일에서 body 패딩 줄임 */
+    }
     #app-container {
-        justify-content: flex-start;
+        padding: 15px;
+    }
+    header h1 {
+        font-size: 1.5em;
     }
     #video-wrapper {
-        max-height: 55vh;
+        margin-bottom: 15px;
     }
-    #controls {
-        padding: 10px;
+    .control-button {
+        font-size: 0.95em;
+        padding: 10px 15px;
+        min-width: 150px;
+    }
+    .button-group {
+        gap: 8px;
+        /* 필요시 flex-direction: column; 으로 변경하여 버튼 세로 정렬 */
+        /* flex-direction: column; */
+        /* align-items: stretch; */
     }
     .checkbox-group {
-        grid-template-columns: repeat(2, 1fr);
-        margin-bottom: 10px;
+        gap: 6px 10px;
+        padding: 8px;
     }
-    .reset-button {
-        padding: 8px 15px;
+    .checkbox-group label {
+        font-size: 0.85em;
+    }
+    #statusBar {
+        font-size: 0.9em;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 400px) {
+    .button-group { /* 매우 작은 화면에서는 버튼을 세로로 쌓음 */
+        flex-direction: column;
+        align-items: stretch; /* 버튼들이 세로로 꽉 차도록 */
+    }
+    .control-button {
+        width: 100%; /* 작은 화면에서 버튼 너비 100% */
+        margin-bottom: 8px; /* 세로로 쌓일 때 버튼 사이 간격 */
+    }
+    .control-button:last-child {
+        margin-bottom: 0;
     }
 }

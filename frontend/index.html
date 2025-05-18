@@ -3,30 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>실시간 영상 분류기</title>
+    <title>Canon Image Classifier</title>
+    <!-- CSS 파일 경로는 Flask 설정에 따라 /style.css 또는 /frontend/style.css 또는 url_for 사용 -->
+    <!-- 여기서는 Flask 기본 static 폴더 접근 방식을 가정하여 /style.css 로 변경 -->
     <link rel="stylesheet" href="/frontend/style.css">
+    <!-- 만약 app.py 에서 static_url_path='/frontend' 로 설정했다면 href="/frontend/style.css" 사용 -->
+    <!-- 또는 Flask 템플릿 기능을 사용한다면 href="{{ url_for('static', filename='style.css') }}" 사용 -->
 </head>
 <body>
     <div id="app-container">
-        <div id="video-wrapper">
-            <video id="liveVideo" autoplay playsinline muted></video>
-            <div id="inferenceOverlay">결과: 대기 중...</div>
-        </div>
-        <canvas id="captureCanvas" style="display: none;"></canvas>
+        <header>
+            <h1>실시간 영상 분류기</h1>
+        </header>
 
-        <div id="controls">
-            <div class="checkbox-group">
-                <label><input type="checkbox" id="cbClass1" disabled> Class 1</label>
-                <label><input type="checkbox" id="cbClass2" disabled> Class 2</label>
-                <label><input type="checkbox" id="cbClass3" disabled> Class 3</label>
-                <label><input type="checkbox" id="cbClass4" disabled> Class 4</label>
+        <main>
+            <div id="video-wrapper">
+                <!-- autoplay 속성 제거 -->
+                <video id="liveVideo" playsinline muted></video>
+                <div id="inferenceOverlay">결과: 대기 중...</div>
             </div>
-            <button id="resetCheckboxesBtn" class="reset-button">모든 감지 기록 리셋</button>
-        </div>
-        <div id="statusBar">연결 상태: -</div>
+            <canvas id="captureCanvas" style="display: none;"></canvas>
+
+            <div id="controls">
+                <div class="button-group">
+                    <button id="startCameraButton" class="control-button">카메라 시작</button>
+                    <button id="resetCheckboxesBtn" class="control-button reset-button">모든 감지 기록 리셋</button>
+                </div>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="cbClass1" disabled> Class 1</label>
+                    <label><input type="checkbox" id="cbClass2" disabled> Class 2</label>
+                    <label><input type="checkbox" id="cbClass3" disabled> Class 3</label>
+                    <label><input type="checkbox" id="cbClass4" disabled> Class 4</label>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <div id="statusBar">준비 완료. '카메라 시작' 버튼을 누르세요.</div>
+        </footer>
     </div>
 
+    <!-- Socket.IO 클라이언트 라이브러리 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.min.js"></script>
+    <!-- JavaScript 파일 경로도 CSS와 동일한 규칙 적용 -->
+    <!-- 여기서는 Flask 기본 static 폴더 접근 방식을 가정하여 /script.js 로 변경 -->
     <script src="/frontend/script.js"></script>
+    <!-- 만약 app.py 에서 static_url_path='/frontend' 로 설정했다면 src="/frontend/script.js" 사용 -->
+    <!-- 또는 Flask 템플릿 기능을 사용한다면 src="{{ url_for('static', filename='script.js') }}" 사용 -->
 </body>
 </html>
