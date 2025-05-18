@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>실시간 영상 분류기</title>
+    <link rel="stylesheet" href="/frontend/style.css">
+</head>
+<body>
+    <div id="app-container">
+        <div id="video-wrapper">
+            <video id="liveVideo" autoplay playsinline muted></video>
+            <div id="inferenceOverlay">결과: 대기 중...</div>
+        </div>
+        <canvas id="captureCanvas" style="display: none;"></canvas>
+
+        <div id="controls">
+            <div class="checkbox-group">
+                <label><input type="checkbox" id="cbClass1" disabled> Class 1</label>
+                <label><input type="checkbox" id="cbClass2" disabled> Class 2</label>
+                <label><input type="checkbox" id="cbClass3" disabled> Class 3</label>
+                <label><input type="checkbox" id="cbClass4" disabled> Class 4</label>
+            </div>
+            <button id="resetCheckboxesBtn" class="reset-button">모든 감지 기록 리셋</button>
+        </div>
+        <div id="statusBar">연결 상태: -</div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.min.js"></script>
+    <script src="/frontend/script.js"></script>
+</body>
+</html>

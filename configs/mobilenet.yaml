@@ -1,5 +1,5 @@
 model:
-  module: 'Models'
+  module: 'models'
   class: 'CustomMobileNetV3Small'
   args: # Input Arguments of your model
     num_classes: 5

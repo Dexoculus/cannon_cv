@@ -6,3 +6,59 @@ checkpoints/
 
 # Ignore teammate's test files
 teammates/
+
+# Ignore environment files
+# .env files are used to store sensitive information like API keys, database URLs, etc.
+Backend/.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*build/
+*develop-eggs/
+*dist/
+*downloads/
+*eggs/
+*.egg-info/
+*lib/
+*lib64/
+*parts/
+*sdist/
+*var/
+*wheels/
+*share/python-wheels/
+*.egg-info/
+*instance/
+*.installed.cfg
+*.log
+*.manifest
+*.spec
+*pip-log.txt
+*pip-delete-this-directory.txt
+*htmlcov/
+*.coverage
+*.coverage.*
+*.cache
+*.hypothesis/
+*.pytest_cache/
+*cover/
+*.nox/
+*.tox/
+*.ipynb_checkpoints/
+*profile_default/
+*ipython_config.py
+*nbproject/
+*.idea/
+*.vscode/
+*Thumbs.db
+*.DS_Store
+
+# Virtual Environment
+venv/
+.venv/
+env/
+.env/ # 가상환경 폴더 이름이 .env일 경우
+# 만약 backend/.env 파일을 버전 관리에서 제외하려면 아래 주석 해제 또는 추가
+# backend/.env # 이 프로젝트에서는 .env를 backend 폴더에 두었으므로
