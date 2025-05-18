@@ -9,7 +9,7 @@ teammates/
 
 # Ignore environment files
 # .env files are used to store sensitive information like API keys, database URLs, etc.
-Backend/.env
+backend/.env
 
 # Python
 __pycache__/
